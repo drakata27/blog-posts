@@ -34,10 +34,35 @@ Open your IDE and create a new project. Then follow the steps below:
 5. Your project structure should look like that:
    ![alt new project 3](pic3.png "New project 3")
 
-6. Add the following package by putting the command below in the terminal. In this tutorial we will keep it simple and store data in memory rather than setting up a database which will be covered in future post
+6. Add the following package by pasting the command below in the terminal. In this tutorial we will keep it simple and store data in memory rather than setting up a database which will be covered in future post
 
 ```
 dotnet add package Microsoft.EntityFrameworkCore.InMemory --version 9.0.0
 ```
 
+7. Run the following command which will add Scalar as our API client instead of Swagger
+
+```
+dotnet add package Scalar.AspNetCore
+```
+
+8. Finally, add the following code in the `Program.cs` file,
+   within the configuration section of the app
+   pipeline.
+
+```
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+    app.MapScalarApiReference(options =>
+    {
+        options
+            .WithTitle("FlashCardAPI")
+            .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+    });
+}
+```
+
 With that our project is set and we can begin writing the API!
+
+### Model class
